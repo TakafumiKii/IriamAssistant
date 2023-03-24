@@ -36,6 +36,8 @@
             WindowToolStripMenuItem = new ToolStripMenuItem();
             button_analize = new Button();
             button_speak = new Button();
+            textBox_speak = new TextBox();
+            checkBox_speak = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Capture).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -50,7 +52,7 @@
             // 
             button_refresh.Location = new Point(0, 36);
             button_refresh.Name = "button_refresh";
-            button_refresh.Size = new Size(139, 38);
+            button_refresh.Size = new Size(101, 38);
             button_refresh.TabIndex = 1;
             button_refresh.Text = "画面更新";
             button_refresh.UseVisualStyleBackColor = true;
@@ -85,9 +87,9 @@
             // 
             // button_analize
             // 
-            button_analize.Location = new Point(145, 36);
+            button_analize.Location = new Point(107, 36);
             button_analize.Name = "button_analize";
-            button_analize.Size = new Size(139, 38);
+            button_analize.Size = new Size(99, 38);
             button_analize.TabIndex = 2;
             button_analize.Text = "解析";
             button_analize.UseVisualStyleBackColor = true;
@@ -95,18 +97,43 @@
             // 
             // button_speak
             // 
-            button_speak.Location = new Point(290, 36);
+            button_speak.Location = new Point(212, 36);
             button_speak.Name = "button_speak";
-            button_speak.Size = new Size(139, 38);
+            button_speak.Size = new Size(101, 38);
             button_speak.TabIndex = 3;
             button_speak.Text = "発音";
             button_speak.UseVisualStyleBackColor = true;
+            button_speak.Click += button_speak_Click;
+            // 
+            // textBox_speak
+            // 
+            textBox_speak.Location = new Point(583, 40);
+            textBox_speak.Name = "textBox_speak";
+            textBox_speak.Size = new Size(53, 31);
+            textBox_speak.TabIndex = 4;
+            textBox_speak.Text = "5";
+            textBox_speak.TextAlign = HorizontalAlignment.Right;
+            textBox_speak.TextChanged += textBox1_TextChanged;
+            // 
+            // checkBox_speak
+            // 
+            checkBox_speak.Appearance = Appearance.Button;
+            checkBox_speak.AutoSize = true;
+            checkBox_speak.Location = new Point(483, 38);
+            checkBox_speak.Name = "checkBox_speak";
+            checkBox_speak.Size = new Size(94, 35);
+            checkBox_speak.TabIndex = 5;
+            checkBox_speak.Text = "自動更新";
+            checkBox_speak.UseVisualStyleBackColor = true;
+            checkBox_speak.CheckedChanged += checkBox_speak_CheckedChanged;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(641, 1212);
+            Controls.Add(checkBox_speak);
+            Controls.Add(textBox_speak);
             Controls.Add(button_speak);
             Controls.Add(button_analize);
             Controls.Add(button_refresh);
@@ -132,5 +159,7 @@
         private ToolStripMenuItem WindowToolStripMenuItem;
         private Button button_analize;
         private Button button_speak;
+        private TextBox textBox_speak;
+        private CheckBox checkBox_speak;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,17 @@ namespace IriamAssistant
         private void FormCapture_Load(object sender, EventArgs e)
         {
             // フォーム全体を透過する
-            this.TransparencyKey = this.BackColor;
+            //            this.TransparencyKey = this.BackColor;
+        }
+
+        public Bitmap CaptureText(IntPtr hWnd)
+        {
+            Debug.Assert(hWnd != IntPtr.Zero);
+
+            var capture = new CaptureWindow();
+            var img = capture.TextCapture(hWnd);
+            pictureBox_Capture.Image = img;
+            return img;
         }
     }
 }
