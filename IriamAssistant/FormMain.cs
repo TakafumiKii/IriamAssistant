@@ -5,6 +5,9 @@ using System.Text;
 using System.Diagnostics;
 using static IriamAssistant.EnumWindow;
 using IriamAssistant.未使用;
+using System.Numerics;
+using Tesseract;
+using OpenCvSharp;
 
 public delegate bool CallBack(int hwnd, int lParam);
 
@@ -19,14 +22,16 @@ namespace IriamAssistant
         EnumWindow _enumWindow;
         ReadSpeaker _readSpeaker = new ReadSpeaker();
         IntervalTask _intervalTask = new IntervalTask();
+        TesseractOCR _tesseractOCR = new TesseractOCR();
+        AnalyzeImage _analyzeImage = new AnalyzeImage();
 
-        Collections.CircularBuffer<string> _logBuffer = new Collections.CircularBuffer<string>(100);
+        Collections.CircularBuffer<string> _logBuffer = new Collections.CircularBuffer<string>(50);
         string checkcode = "";
 
         void IMenuItem.OnClick(IntPtr hWnd)
         {
             FrameCapture(hWnd);
-            checkBox_speak.Checked = true;
+            checkBox_AutoRefresh.Checked = true;
         }
 
         void FrameCapture(IntPtr hWnd)
@@ -63,12 +68,32 @@ namespace IriamAssistant
             _enumWindow.Refresh();
         }
 
+        static int whsize = 7;
+        static float factor = 0.03f;
+        static bool addborder = true;
         private async void button_analize_Click(object sender, EventArgs e)
         {
             if (_enumWindow.SelectWindowHandle == IntPtr.Zero) return;
 
+            checkBox_AutoRefresh.Checked = false;
+
+
             var img = _formCapture.CaptureText(_enumWindow.SelectWindowHandle);
-            await WinOCR.AnalizeTask(img);
+            //            img.Save("解析用画像.bmp");
+            //var img = new Bitmap("解析用画像.bmp");
+            _analyzeImage.OpenCvTest(img);
+            return;
+
+            var pix = PixConverter.ToPix(img);
+            var gray = pix.ConvertRGBToGray();
+            var thold = gray.BinarizeSauvola(whsize, factor, addborder);
+
+            //            var gray = _tesseractOCR.ConvertGray(img);
+            _formCapture.CaptureImage = PixConverter.ToBitmap(gray);
+            _formCapture.AnalyzeImage = PixConverter.ToBitmap(thold);
+            //            var text = await WinOCR.AnalizeTask(img);
+            var text = _tesseractOCR.AnalyzeFromGray(thold);
+            Debug.WriteLine(text);
         }
 
         private void button_refresh_Click(object sender, EventArgs e)
@@ -80,11 +105,27 @@ namespace IriamAssistant
         {
             await SpeakTask();
         }
+
         private async Task SpeakTask()
         {
             if (_enumWindow.SelectWindowHandle == IntPtr.Zero) return;
             var img = _formCapture.CaptureText(_enumWindow.SelectWindowHandle);
-            var lines = await WinOCR.AnalizeTask(img);
+
+            var pix = PixConverter.ToPix(img);
+            var gray = pix.ConvertRGBToGray();
+            var thold = gray.BinarizeSauvola(whsize, factor, addborder);
+            var data =             
+
+            //            var gray = _tesseractOCR.ConvertGray(img);
+            _formCapture.CaptureImage = PixConverter.ToBitmap(gray);
+            var bitmap = PixConverter.ToBitmap(thold);
+            _formCapture.AnalyzeImage = bitmap;
+
+            //var gray = _tesseractOCR.ConvertGray(img);
+            //var bitmap = TesseractOCR.ToBitmap(gray);
+
+            //            var lines = await WinOCR.AnalizeTask(img);
+            var lines = await WinOCR.AnalizeTask(bitmap);
 
             if (lines.Count == 0) return;
             if (lines.Last().Text == checkcode) return;
@@ -99,6 +140,7 @@ namespace IriamAssistant
                 }
                 _logBuffer.InsertLast(text);
                 str.Append(text + "\r\n");
+                Debug.WriteLine(text);
             }
             checkcode = lines.Last().Text;
             _readSpeaker.Speak(str.ToString());
@@ -108,8 +150,14 @@ namespace IriamAssistant
         {
             var textbox = (TextBox)sender;
             var text = textbox.Text;
-            var ms = int.Parse(text) * 1000;
-            _intervalTask.IntervalMs = ms;
+            if(int.TryParse(text, out int value))
+            {
+                _intervalTask.IntervalMs = value * 1000;
+            }
+            else
+            {
+                MessageBox.Show("入力可能な文字は半角数字のみです");
+            }
         }
 
         private void checkBox_speak_CheckedChanged(object sender, EventArgs e)

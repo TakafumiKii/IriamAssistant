@@ -37,7 +37,7 @@
             button_analize = new Button();
             button_speak = new Button();
             textBox_speak = new TextBox();
-            checkBox_speak = new CheckBox();
+            checkBox_AutoRefresh = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Capture).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -107,6 +107,7 @@
             // 
             // textBox_speak
             // 
+            textBox_speak.ImeMode = ImeMode.Disable;
             textBox_speak.Location = new Point(583, 40);
             textBox_speak.Name = "textBox_speak";
             textBox_speak.Size = new Size(53, 31);
@@ -117,22 +118,22 @@
             // 
             // checkBox_speak
             // 
-            checkBox_speak.Appearance = Appearance.Button;
-            checkBox_speak.AutoSize = true;
-            checkBox_speak.Location = new Point(483, 38);
-            checkBox_speak.Name = "checkBox_speak";
-            checkBox_speak.Size = new Size(94, 35);
-            checkBox_speak.TabIndex = 5;
-            checkBox_speak.Text = "自動更新";
-            checkBox_speak.UseVisualStyleBackColor = true;
-            checkBox_speak.CheckedChanged += checkBox_speak_CheckedChanged;
+            checkBox_AutoRefresh.Appearance = Appearance.Button;
+            checkBox_AutoRefresh.AutoSize = true;
+            checkBox_AutoRefresh.Location = new Point(483, 38);
+            checkBox_AutoRefresh.Name = "checkBox_speak";
+            checkBox_AutoRefresh.Size = new Size(94, 35);
+            checkBox_AutoRefresh.TabIndex = 5;
+            checkBox_AutoRefresh.Text = "自動更新";
+            checkBox_AutoRefresh.UseVisualStyleBackColor = true;
+            checkBox_AutoRefresh.CheckedChanged += checkBox_speak_CheckedChanged;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(641, 1212);
-            Controls.Add(checkBox_speak);
+            Controls.Add(checkBox_AutoRefresh);
             Controls.Add(textBox_speak);
             Controls.Add(button_speak);
             Controls.Add(button_analize);
@@ -160,6 +161,6 @@
         private Button button_analize;
         private Button button_speak;
         private TextBox textBox_speak;
-        private CheckBox checkBox_speak;
+        private CheckBox checkBox_AutoRefresh;
     }
 }

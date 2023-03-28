@@ -24,6 +24,9 @@ namespace IriamAssistant
             //            this.TransparencyKey = this.BackColor;
         }
 
+        public Image CaptureImage { get => pictureBox_Capture.Image; set => pictureBox_Capture.Image = value; }
+        public Image AnalyzeImage { get => pictureBox_Analize.Image; set => pictureBox_Analize.Image = value; }
+
         public Bitmap CaptureText(IntPtr hWnd)
         {
             Debug.Assert(hWnd != IntPtr.Zero);
