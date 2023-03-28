@@ -78,7 +78,10 @@ namespace IriamAssistant
             checkBox_AutoRefresh.Checked = false;
 
 
-            var img = _formCapture.CaptureText(_enumWindow.SelectWindowHandle);
+//        var img = _formCapture.CaptureText(_enumWindow.SelectWindowHandle);
+            var capture = new CaptureWindow();
+            var img = capture.FrameCapture(_enumWindow.SelectWindowHandle);
+
             //            img.Save("‰ğÍ—p‰æ‘œ.bmp");
             //var img = new Bitmap("‰ğÍ—p‰æ‘œ.bmp");
             _analyzeImage.OpenCvTest(img);
