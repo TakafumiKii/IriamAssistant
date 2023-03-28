@@ -11,7 +11,7 @@ namespace IriamAssistant
 {
     public class WinOCR
     {
-        public static async Task<IReadOnlyList<OcrLine>> AnalizeTask(Bitmap img)
+        public static async Task<IReadOnlyList<OcrLine>> AnalizeTask(Bitmap image)
         {
             //// ローカルファイルの場合
             //var storageFile = await StorageFile.GetFileFromPathAsync("D:\\Project\\Assistant\\IriamAssistant\\bin\\Debug\\net7.0-windows10.0.22621.0\\画像.bmp");
@@ -26,7 +26,7 @@ namespace IriamAssistant
 
             using (var stream = new Windows.Storage.Streams.InMemoryRandomAccessStream())
             {
-                img.Save(stream.AsStream(), ImageFormat.Bmp);//choose the specific image format by your own bitmap source
+                image.Save(stream.AsStream(), ImageFormat.Bmp);//choose the specific image format by your own bitmap source
                 Windows.Graphics.Imaging.BitmapDecoder decoder = await Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(stream);
                 SoftwareBitmap softwareBitmap = await decoder.GetSoftwareBitmapAsync();
                 var ocrEngine = OcrEngine.TryCreateFromUserProfileLanguages();
